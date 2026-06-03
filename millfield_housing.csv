@@ -1,0 +1,36 @@
+neighborhood_id,neighborhood_name,district,total_housing_units,pct_nonwhite,median_household_income,median_monthly_rent,vacancy_rate,code_violations_per_1000,transit_score,pct_broadband_access,pct_owner_occupied
+N-01,Crestwood,North,1723,0.12,74000,1618,0.062,12,52,0.99,0.59
+N-02,Elmhurst,North,1797,0.18,68000,1539,0.081,13,52,0.96,0.56
+N-03,Fairview Heights,North,1921,0.09,88000,2108,0.041,4,64,0.99,0.74
+N-04,Birchwood,North,1645,0.22,63000,1416,0.073,11,54,0.94,0.49
+N-05,Pinecrest,North,2145,0.31,57000,1255,0.081,21,56,0.83,0.51
+N-06,Thorndale,North,1959,0.41,51000,1199,0.108,17,53,0.85,0.49
+E-01,Eastport,East,1493,0.55,44000,866,0.143,24,42,0.8,0.35
+E-02,Garfield East,East,2582,0.63,39000,771,0.129,29,34,0.79,0.33
+E-03,Millside,East,1876,0.71,34000,627,0.15,35,39,0.73,0.26
+E-04,Ironwood Flats,East,2474,0.78,30000,678,0.161,35,41,0.68,0.21
+E-05,Riverside East,East,2251,0.82,27000,497,0.19,37,28,0.71,0.25
+E-06,Halstead Park,East,2099,0.88,24000,422,0.173,38,25,0.65,0.21
+E-07,Porter Commons,East,2403,0.75,32000,608,0.166,34,36,0.71,0.26
+W-01,Westgate,West,1940,0.38,56000,1197,0.103,15,44,0.88,0.49
+W-02,Oakwood,West,1854,0.44,52000,1159,0.084,20,39,0.86,0.44
+W-03,Ferndale,West,1657,0.51,47000,992,0.107,24,44,0.83,0.39
+W-04,Creekside West,West,2002,0.59,43000,869,0.136,25,39,0.73,0.38
+W-05,Rosewood,West,1611,0.29,61000,1343,0.082,17,44,0.93,0.52
+W-06,Lincoln West,West,1782,0.47,50000,1002,0.116,21,48,0.86,0.4
+S-01,Southgate,South,2202,0.72,33000,630,0.174,33,27,0.72,0.23
+S-02,Clayfield,South,2065,0.81,28000,499,0.173,34,24,0.67,0.18
+S-03,Dockside South,South,2357,0.85,25000,475,0.171,38,31,0.64,0.24
+S-04,Bridgeport South,South,2733,0.67,37000,681,0.149,31,33,0.7,0.29
+S-05,Canaryville South,South,2089,0.79,29000,567,0.181,34,30,0.67,0.27
+S-06,Industrial South,South,2486,0.83,26000,543,0.18,38,24,0.63,0.15
+DT-01,Downtown Core,Downtown,3275,0.35,72000,1576,0.104,18,82,0.99,0.56
+DT-02,Midtown,Downtown,2731,0.41,65000,1366,0.094,21,78,0.95,0.51
+DT-03,Arts District,Downtown,3243,0.28,76000,1802,0.085,15,80,0.98,0.59
+DT-04,Financial Quarter,Downtown,2891,0.19,94000,2128,0.071,11,82,0.99,0.73
+N-07,Shorewood North,North,1632,0.08,102000,2328,0.063,12,57,0.99,0.79
+E-08,Washington East,East,2417,0.91,22000,400,0.203,39,30,0.58,0.15
+S-07,Greater South,South,1888,0.87,25000,505,0.191,41,23,0.67,0.24
+W-07,Layton West,West,1779,0.55,46000,933,0.128,27,48,0.8,0.34
+N-08,Glenbrook,North,1995,0.15,79000,1896,0.068,8,51,0.99,0.65
+S-08,Burnside South,South,2732,0.92,21000,400,0.195,39,26,0.62,0.13

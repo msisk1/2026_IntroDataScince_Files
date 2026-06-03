@@ -1,0 +1,96 @@
+DATASET: Millfield City Neighborhood Housing and Conditions
+SOURCE: Fictional dataset created for Introduction to Data Science using Python (Chapter 3)
+CITY: Millfield (fictional mid-sized U.S. city, ~180,000 residents)
+UNIT OF ANALYSIS: Neighborhood (N=35)
+TIME PERIOD: 2020-2023
+CREATED BY: Course dataset, not real data. Patterns are illustrative.
+
+KNOWN LIMITATIONS:
+- All data are simulated. Neighborhood names, boundaries, and values are fictional.
+- Equity patterns are designed to illustrate real-world disparities documented
+  in housing research. They are not derived from any specific city's data.
+- median_monthly_rent reflects median asking rent, not median rent paid.
+  Rent-controlled or subsidized units may not be captured.
+- code_violations_per_1000 reflects reported and inspected violations only.
+  Neighborhoods with less frequent inspections may have undercounted violations.
+- transit_score is a composite index (0-100) based on proximity to stops,
+  frequency of service, and hours of operation. It is not derived from a
+  standard published index.
+- pct_broadband_access is based on household survey responses and may
+  undercount households without internet access who were harder to reach.
+
+VARIABLES:
+
+neighborhood_id
+  Type: string
+  Description: Unique identifier for each neighborhood.
+  Format: [district code]-[number] (N=North, E=East, W=West, S=South, DT=Downtown)
+  Notes: Treat as a categorical identifier, not a number.
+
+neighborhood_name
+  Type: string
+  Description: Common name for the neighborhood.
+
+district
+  Type: string (categorical)
+  Description: City district the neighborhood belongs to.
+  Valid values: North, East, West, South, Downtown
+
+total_housing_units
+  Type: integer
+  Description: Estimated total number of housing units in the neighborhood.
+  Units: Number of units
+
+pct_nonwhite
+  Type: float
+  Description: Proportion of residents who identify as non-white.
+  Units: Proportion (0.0 to 1.0). Multiply by 100 for percentage.
+
+median_household_income
+  Type: integer
+  Description: Median annual household income for neighborhood residents.
+  Units: U.S. dollars (nominal, 2022)
+
+median_monthly_rent
+  Type: integer
+  Description: Median monthly asking rent for rental units in the neighborhood.
+  Units: U.S. dollars per month
+  Notes: Reflects asking rent, not necessarily rent paid. Does not include
+         subsidized or rent-controlled units, which may be underrepresented
+         in lower-income neighborhoods.
+
+vacancy_rate
+  Type: float
+  Description: Proportion of housing units that are vacant.
+  Units: Proportion (0.0 to 1.0). Multiply by 100 for percentage.
+  Notes: Includes units vacant for any reason (for sale, for rent, seasonal,
+         or other). High vacancy in low-income neighborhoods often reflects
+         abandonment rather than market availability.
+
+code_violations_per_1000
+  Type: integer
+  Description: Number of housing code violations cited per 1,000 housing units
+               in the most recent inspection cycle.
+  Units: Violations per 1,000 units
+  Notes: Reflects reported and inspected violations only. Neighborhoods with
+         less frequent code enforcement inspections may have undercounted
+         violations regardless of actual housing conditions.
+
+transit_score
+  Type: integer
+  Description: Composite index of public transit accessibility (0-100).
+  Units: Index score (higher = better access)
+  Notes: Based on proximity to stops, service frequency, and hours of
+         operation. Not derived from a standard published index.
+
+pct_broadband_access
+  Type: float
+  Description: Proportion of households with broadband internet access.
+  Units: Proportion (0.0 to 1.0). Multiply by 100 for percentage.
+  Notes: Based on household survey responses. May undercount households
+         without internet access who were harder to reach by survey.
+
+pct_owner_occupied
+  Type: float
+  Description: Proportion of occupied housing units that are owner-occupied.
+  Units: Proportion (0.0 to 1.0). Multiply by 100 for percentage.
