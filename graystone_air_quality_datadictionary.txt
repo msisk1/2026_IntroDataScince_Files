@@ -1,0 +1,107 @@
+DATASET: Graystone City Neighborhood Air Quality and Health Outcomes
+SOURCE: Fictional dataset created for Introduction to Data Science using Python (Chapter 3)
+CITY: Graystone (fictional mid-sized U.S. city, ~280,000 residents)
+UNIT OF ANALYSIS: Neighborhood (N=50)
+TIME PERIOD: 2020-2024
+CREATED BY: Course dataset, not real data. Patterns are illustrative.
+
+KNOWN LIMITATIONS:
+- All data are simulated. Neighborhood names, boundaries, and values are fictional.
+- PM2.5 and asthma_er_rate values are correlated by design to illustrate equity patterns.
+- station_last_calibrated is intentionally missing for some neighborhoods to illustrate
+  metadata gaps in real-world environmental monitoring data.
+- Data sources are mixed (City EPA Monitor, Community Sensor, Estimated), reflecting
+  real-world variation in data quality and collection method.
+- Population values are approximate and not derived from actual Census data.
+
+VARIABLES:
+
+neighborhood_id
+  Type: string
+  Description: Unique identifier for each neighborhood. Format: [district code]-[number].
+  Valid values: NW (North), NE (East), SW (West), SE (South), DT (Downtown)
+  Notes: Treat as a categorical identifier, not a number.
+
+neighborhood_name
+  Type: string
+  Description: Common name for the neighborhood.
+
+district
+  Type: string (categorical)
+  Description: City district the neighborhood belongs to.
+  Valid values: North, East, West, South, Downtown
+
+pop_2020
+  Type: integer
+  Description: Estimated residential population as of 2020.
+  Units: Number of residents
+  Notes: Approximate. Not derived from actual Census data.
+
+pct_nonwhite
+  Type: float
+  Description: Proportion of residents who identify as non-white.
+  Units: Proportion (0.0 to 1.0). Multiply by 100 for percentage.
+  Notes: Derived from simulated demographic data. Does not distinguish between
+         specific racial or ethnic groups.
+
+median_household_income
+  Type: integer
+  Description: Median annual household income for neighborhood residents.
+  Units: U.S. dollars (nominal, 2020)
+
+pm25_annual_mean
+  Type: float
+  Description: Annual mean concentration of fine particulate matter (PM2.5).
+  Units: Micrograms per cubic meter (ug/m3)
+  Notes: EPA 24-hour standard is 35 ug/m3. EPA annual standard is 12 ug/m3.
+         Values above 12 ug/m3 exceed the annual standard.
+         For neighborhoods without a City EPA Monitor, values are estimated
+         from community sensors or interpolated from adjacent stations.
+         Estimated values carry higher uncertainty.
+
+pm25_days_above_standard
+  Type: integer
+  Description: Number of days per year on which the daily PM2.5 reading
+               exceeded the EPA 24-hour standard of 35 ug/m3.
+  Units: Days per year
+
+tree_canopy_pct
+  Type: float
+  Description: Proportion of neighborhood land area covered by tree canopy.
+  Units: Proportion (0.0 to 1.0). Multiply by 100 for percentage.
+  Notes: Derived from simulated land cover data.
+
+asthma_er_rate
+  Type: float
+  Description: Rate of emergency room visits with a primary diagnosis of asthma.
+  Units: ER visits per 1,000 residents per year
+  Notes: Reflects reported ER visits only. Does not capture residents who
+         sought care at urgent care clinics, primary care providers, or who
+         did not seek care at all.
+
+monitoring_station
+  Type: boolean (True/False)
+  Description: Whether a City EPA air quality monitoring station is located
+               within or immediately adjacent to the neighborhood.
+  Notes: Neighborhoods without a station (False) have pm25_annual_mean values
+         derived from community sensors or estimation, not direct measurement.
+
+station_last_calibrated
+  Type: date (YYYY-MM-DD) or blank
+  Description: Date of most recent calibration for the neighborhood's City EPA
+               monitoring station.
+  Notes: Blank if monitoring_station is False (no station present).
+         Also blank for some stations where calibration records were not
+         systematically maintained. Missing calibration dates indicate
+         uncertainty about measurement accuracy for those stations.
+         This is an intentional data quality issue for instructional purposes.
+
+data_source
+  Type: string (categorical)
+  Description: Primary source of the pm25_annual_mean value for this neighborhood.
+  Valid values:
+    City EPA Monitor   -- Direct measurement from a calibrated City EPA station
+    Community Sensor   -- Low-cost sensor operated by a community organization;
+                          higher measurement uncertainty than EPA monitors
+    Estimated          -- Interpolated from adjacent stations or modeled;
+                          highest uncertainty, should be interpreted with caution
