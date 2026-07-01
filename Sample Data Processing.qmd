@@ -1,0 +1,315 @@
+---
+title: "Data Access"
+format: html
+editor: visual
+---
+
+## 2024 ACS
+
+Q
+
+```{r}
+library(tidycensus)
+library(tidyverse)
+
+# Pull ACS 5-year estimates for Cuyahoga County census tracts
+cuyahoga_acs <- get_acs(
+  geography = "tract",
+  state = "OH",
+  county = "Cuyahoga",
+  year = 2024,  
+  survey = "acs5",
+  variables = c(
+    total_pop           = "B01003_001",
+    median_hh_income    = "B19013_001",
+    poverty_count       = "B17001_002",
+    bachelors           = "B15003_022",
+    masters             = "B15003_023",
+    professional        = "B15003_024",
+    doctorate           = "B15003_025",
+    owner_occupied      = "B25003_002",
+    median_gross_rent   = "B25064_001",
+    white_alone         = "B02001_002",
+    total_race          = "B02001_001"
+  ),
+  output = "wide"
+) %>%
+  select(-ends_with("M")) %>%
+  rename_with(~ str_remove(.x, "E$"), ends_with("E")) %>%
+  mutate(
+    nonwhite_count       = total_race - white_alone,
+    bachelors_up_count   = bachelors + masters + professional + doctorate
+  ) %>%
+  select(
+    geoid              = GEOID,
+    tract_name         = NAM,
+    total_pop,
+    median_hh_income,
+    poverty_count,
+    bachelors_up_count,
+    owner_occupied,
+    nonwhite_count,
+    median_gross_rent
+  )
+
+# Quick check
+glimpse(cuyahoga_acs)
+summary(cuyahoga_acs)
+
+# Save to CSV
+write_csv(cuyahoga_acs, "cuyahoga_acs_2024.csv")
+```
+
+## Air Quality
+
+```{r}
+library(tidyverse)
+
+# Download EPA AQS annual summary for PM2.5, 2024
+# This is a large national file (~50MB) so may take a moment
+url <- "https://aqs.epa.gov/aqsweb/airdata/annual_conc_by_monitor_2024.zip"
+
+temp <- tempfile()
+download.file(url, temp)
+aqs_raw <- read_csv(unz(temp, "annual_conc_by_monitor_2024.csv"))
+unlink(temp)
+
+# Filter to Cuyahoga County, Ohio
+# FIPS: State = 39 (Ohio), County = 035 (Cuyahoga)
+cuyahoga_aqs <- aqs_raw %>%
+  filter(
+    `State Name` == "Ohio",
+    `County Name` == "Cuyahoga",
+    (`Parameter Name` == "PM2.5 - Local Conditions" & 
+       `Sample Duration` == "24-HR BLK AVG" &
+       `Pollutant Standard` == "PM25 24-hour 2024") |
+    (`Parameter Name` == "Ozone" & 
+       `Sample Duration` == "8-HR RUN AVG BEGIN HOUR" &
+       `Pollutant Standard` == "Ozone 8-hour 2015")
+  ) %>%
+  select(
+    site_id          = `Site Num`,
+    local_site_name  = `Local Site Name`,
+    address          = Address,
+    latitude         = Latitude,
+    longitude        = Longitude,
+    parameter        = `Parameter Name`,
+    year             = Year,
+    units            = `Units of Measure`,
+    observation_pct  = `Observation Percent`,
+    mean_value       = `Arithmetic Mean`,
+    max_value        = `1st Max Value`,
+    pct_98th         = `98th Percentile`,
+    pct_75th         = `75th Percentile`,
+    pct_50th         = `50th Percentile`
+  )
+
+cuyahoga_aqs %>% count(parameter)
+glimpse(cuyahoga_aqs)
+# Save
+write_csv(cuyahoga_aqs, "cuyahoga_aqs_2024.csv")
+```
+
+## NOAA
+
+Downloaded from the standard web tool <https://www.ncei.noaa.gov/cdo-web/>
+
+![](images/clipboard-1153502819.png)
+
+```{r}
+library(rnoaa)
+library(tidyverse)
+
+
+weather_raw <- read_csv("4337957.csv")
+
+selected_stations <- c(
+  "USW00014820",  # Cleveland Hopkins International Airport (inland/SW, full data)
+  "USW00004853",  # Cleveland Burke Lakefront Airport (lakefront, full data)
+  "US1OHCY0024",  # Parma 1.9 NNW (south/suburban, precip only)
+  "US1OHCY0048",  # Highland Hills 0.8 W (east, precip only)
+  "US1OHCY0041"   # Lakewood 1.3 SSW (near lake/west, precip only)
+)
+
+cleveland_weather <- weather_raw %>%
+  filter(STATION %in% selected_stations) %>%
+  select(
+    station_id    = STATION,
+    station_name  = NAME,
+    latitude      = LATITUDE,
+    longitude     = LONGITUDE,
+    date          = DATE,
+    temp_max_c    = TMAX,
+    temp_min_c    = TMIN,
+    precip_mm     = PRCP,
+    snowfall_mm   = SNOW,
+    wind_speed_ms = AWND
+  ) %>%
+  mutate(
+    # NOAA stores temperature in tenths of degrees C
+    temp_max_c    = temp_max_c / 10,
+    temp_min_c    = temp_min_c / 10,
+    # NOAA stores precipitation in tenths of mm
+    precip_mm     = precip_mm  / 10,
+    # NOAA stores wind speed in tenths of meters per second
+    wind_speed_ms = wind_speed_ms / 10,
+    # Snowfall is already in mm
+    # Create a readable station type column
+    station_type  = case_when(
+      str_starts(station_id, "USW") ~ "Airport (NWS)",
+      str_starts(station_id, "US1") ~ "Volunteer (CoCoRaHS)",
+      TRUE ~ "Other"
+    )
+  ) %>%
+  select(
+    station_id, station_name, station_type,
+    latitude, longitude,
+    date, temp_max_c, temp_min_c,
+    precip_mm, snowfall_mm, wind_speed_ms
+  ) %>%
+  arrange(station_id, date)
+
+# Quick check
+glimpse(cleveland_weather)
+
+cleveland_weather %>%
+  group_by(station_id, station_name, station_type) %>%
+  summarise(
+    n_days       = n(),
+    pct_tmax     = mean(!is.na(temp_max_c)),
+    pct_prcp     = mean(!is.na(precip_mm)),
+    .groups = "drop"
+  ) %>%
+  print()
+
+write_csv(cleveland_weather, "cuyahoga_weather_2020_2024.csv")
+```
+
+## Building Permits
+
+```{r}
+building_permits <- read_csv("Building_Permits_-148757603738756233.csv")
+glimpse(building_permits)
+
+
+# Parse dates and check year distribution
+building_permits <- building_permits %>%
+  mutate(
+    file_date  = mdy_hms(FILE_DATE),
+    issue_date = mdy_hms(ISSUE_DATE),
+    year       = year(file_date)
+  )
+
+# Year distribution
+building_permits %>%
+  count(year) %>%
+  print(n = Inf)
+
+# Permit type distribution
+building_permits %>%
+  count(PERMIT_TYPE, sort = TRUE) %>%
+  print()
+
+# Permit category distribution  
+building_permits %>%
+  count(PERMIT_CATEGORY, sort = TRUE) %>%
+  print(n = 20)
+
+# Neighborhood distribution
+building_permits %>%
+  count(DW_Neighborhood, sort = TRUE) %>%
+  print(n = 20)
+
+
+cleveland_permits_2024 <- building_permits %>%
+  filter(
+    year == 2024,
+    PERMIT_TYPE == "Building Permit",
+    PERMIT_CATEGORY == "New",
+    CURRENT_TASK_STATUS == "Permit Closed"
+  ) %>%
+  select(
+    permit_id        = PERMIT_ID,
+    year,
+    file_date,
+    issue_date,
+    permit_subtype   = PERMIT_SUBTYPE,
+    job_description  = JOB_DESCRIPTION,
+    job_value        = JOB_VALUE,
+    total_fees_paid  = TOTAL_FEES_PAID,
+    ward             = WARD,
+    neighborhood     = DW_Neighborhood,
+    latitude         = LAT,
+    longitude        = LON
+  ) %>%
+  mutate(
+    file_date  = as.Date(file_date),
+    issue_date = as.Date(issue_date)
+  )
+
+glimpse(cleveland_permits_2024)
+cleveland_permits_2024 %>% count(permit_subtype, sort = TRUE)
+cleveland_permits_2024 %>% count(neighborhood, sort = TRUE) %>% print(n = Inf)
+cleveland_permits_2024 %>% summary()
+
+write_csv(cleveland_permits_2024, "cleveland_permits_2024.csv")
+
+```
+
+## BLS
+
+```{r}
+library(tidyverse)
+
+bls_raw <- read_csv("BLS_2010-2026.csv", skip = 8)
+
+cuyahoga_unemployment <- bls_raw %>%
+  rename(
+    year              = Year,
+    month_name        = Period,
+    labor_force       = `labor force`,
+    employment        = employment,
+    unemployment      = unemployment,
+    unemployment_rate = `unemployment rate`
+  ) %>%
+  mutate(
+    # Extract the flag before stripping it
+    data_flag = case_when(
+      str_detect(unemployment_rate, "\\(T\\)") ~ "revised",
+      str_detect(unemployment_rate, "\\(P\\)") ~ "preliminary",
+      str_detect(unemployment_rate, "\\(X\\)") ~ "unavailable",
+      TRUE ~ "final"
+    ),
+    # Now strip flags and convert to numeric
+    across(
+      c(labor_force, employment, unemployment, unemployment_rate),
+      ~ as.numeric(str_remove_all(.x, "\\(.*?\\)|-"))
+    ),
+    month = match(month_name, month.abb),
+    date  = as.Date(paste(year, month, "01", sep = "-"))
+  ) %>%
+  filter(year >= 2010, year <= 2024) %>%
+  select(
+    date,
+    year,
+    month,
+    month_name,
+    labor_force,
+    employment,
+    unemployment,
+    unemployment_rate,
+    data_flag
+  ) %>%
+  arrange(date)
+
+# Check flag distribution
+cuyahoga_unemployment %>%
+  count(data_flag)
+
+cuyahoga_unemployment %>%
+  filter(unemployment_rate > 10) %>%
+  print()
+
+glimpse(cuyahoga_unemployment)
+write_csv(cuyahoga_unemployment, "cuyahoga_unemployment_2010_2024.csv")
+```

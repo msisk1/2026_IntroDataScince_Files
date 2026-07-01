@@ -1,0 +1,105 @@
+DATASET: Cuyahoga County Census Tract Demographic and Economic Data
+SOURCE: U.S. Census Bureau, American Community Survey (ACS) 5-Year Estimates, 2020-2024
+GEOGRAPHY: Census tracts within Cuyahoga County, Ohio
+UNIT OF ANALYSIS: Census tract (N=approximately 450)
+TIME PERIOD: 2020-2024 (5-year pooled estimates)
+ACCESSED: June 15, 2026
+FILE: cuyahoga_acs_2024.csv
+
+ABOUT THIS DATASET:
+The American Community Survey is an ongoing survey conducted by the U.S. Census Bureau
+that collects detailed demographic, social, economic, and housing information about the
+U.S. population. The 5-year estimates pool five years of survey responses to produce
+reliable estimates for small geographies like census tracts. Each row in this dataset
+represents one census tract in Cuyahoga County, Ohio.
+
+KNOWN LIMITATIONS:
+- ACS estimates are based on a sample, not a complete count. All values carry a margin
+  of error that is not included in this simplified dataset. Users making policy or
+  research decisions should consult the full ACS data including margins of error at
+  data.census.gov.
+- 5-year estimates represent an average over the 2020-2024 period, not a snapshot of
+  any single year. Rapidly changing neighborhoods may not be accurately captured.
+- Some census tracts have very small populations, which increases the uncertainty of
+  their estimates. Tracts with populations under 500 should be interpreted with
+  particular caution.
+- Census tract boundaries occasionally change between decennial censuses. The boundaries
+  used here are from the 2020 Census.
+- The nonwhite_count variable is calculated as total_race minus white_alone and therefore
+  includes all persons who did not identify as white alone, including those who identified
+  as multiracial.
+
+VARIABLE REFERENCE:
+
+geoid
+  Type: string
+  Description: Unique identifier for each census tract, combining state, county, and
+               tract FIPS codes.
+  Example: "39035010100" (39=Ohio, 035=Cuyahoga County, 010100=tract number)
+  ACS Table: Derived from geography
+  Notes: Always treat as a string, not a number. Leading zeros are significant.
+
+tract_name
+  Type: string
+  Description: Human-readable census tract name including county and state.
+  Example: "Census Tract 101, Cuyahoga County, Ohio"
+  ACS Table: Derived from geography
+
+total_pop
+  Type: integer
+  Description: Estimated total population of the census tract.
+  Units: Number of persons
+  ACS Table: B01003_001
+
+median_hh_income
+  Type: integer
+  Description: Estimated median annual household income.
+  Units: U.S. dollars (2024 inflation-adjusted)
+  ACS Table: B19013_001
+  Notes: May be NA for tracts with very small populations or insufficient survey
+         responses.
+
+poverty_count
+  Type: integer
+  Description: Estimated number of persons below the federal poverty level for whom
+               poverty status was determined.
+  Units: Number of persons
+  ACS Table: B17001_002
+  Notes: Does not include persons for whom poverty status was not determined
+         (e.g., persons in institutional group quarters).
+
+bachelors_up_count
+  Type: integer
+  Description: Estimated number of persons aged 25 and older with a bachelor's degree
+               or higher (sum of bachelor's, master's, professional, and doctoral
+               degrees).
+  Units: Number of persons
+  ACS Tables: B15003_022 + B15003_023 + B15003_024 + B15003_025
+  Notes: Derived variable; sum of four ACS estimates.
+
+owner_occupied
+  Type: integer
+  Description: Estimated number of owner-occupied housing units.
+  Units: Number of housing units
+  ACS Table: B25003_002
+
+nonwhite_count
+  Type: integer
+  Description: Estimated number of persons who did not identify as white alone.
+               Calculated as total_race minus white_alone.
+  Units: Number of persons
+  ACS Tables: B02001_001 minus B02001_002
+  Notes: Includes persons identifying as multiracial. This is a derived variable,
+         not a direct ACS estimate.
+
+median_gross_rent
+  Type: integer
+  Description: Estimated median monthly gross rent (including utilities) for
+               renter-occupied housing units.
+  Units: U.S. dollars per month (2024 inflation-adjusted)
+  ACS Table: B25064_001
+  Notes: May be NA for tracts with very few rental units or insufficient survey
+         responses.
+
+FOR FULL DOCUMENTATION including margins of error, survey methodology, and
+definitions, see: https://www.census.gov/programs-surveys/acs/technical-documentation.html

@@ -1,0 +1,47 @@
+BLS Local Area Unemployment Statistics
+Cuyahoga County, Ohio | January 2010 - December 2024
+Series ID: LAUCN390350000000003
+Not Seasonally Adjusted
+Accessed: June 15, 2026
+File: cuyahoga_unemployment_2010_2024.csv
+
+VARIABLES
+
+date ..................... First day of reference month (YYYY-MM-DD)
+year ..................... Calendar year (integer)
+month ................... Month number, 1-12 (integer)
+month_name .............. Three-letter month abbreviation
+labor_force ............. Estimated civilian labor force (persons aged 16+, not military
+                         or institutionalized)
+employment .............. Estimated employed persons
+unemployment ............ Estimated unemployed persons actively seeking work
+unemployment_rate ....... Unemployment as percent of labor force (e.g., 8.8 = 8.8%)
+data_flag ............... BLS revision status: "final" or "revised" (see Notes)
+
+NOTES
+
+These are model-based estimates, not direct counts. LAUS combines Current Population
+Survey data, Current Employment Statistics data, and state unemployment insurance
+records using a statistical model. Estimates are subject to revision.
+
+Data are not seasonally adjusted. Unemployment rates are typically higher in winter
+months and lower in summer months independent of broader economic conditions. For
+trend analysis, year-over-year comparisons (same month, different years) are more
+meaningful than month-to-month comparisons.
+
+The April 2020 value (20.9%) reflects the acute impact of COVID-19 pandemic
+restrictions. This represents a structural break in the series, not a typical
+economic fluctuation.
+
+The unemployment rate does not capture discouraged workers (those who have stopped
+looking for work) or underemployed workers (part-time workers seeking full-time
+employment).
+
+data_flag values:
+  "final"   -- Value has completed all BLS revision cycles.
+  "revised" -- Value was updated through BLS annual benchmark revision, which
+               incorporates additional administrative data. Revised values are
+               more accurate than initial releases, not less reliable.
+
+For full methodology: https://www.bls.gov/lau/laumthd.htm
+For series data: https://data.bls.gov/timeseries/LAUCN390350000000003

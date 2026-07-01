@@ -1,0 +1,74 @@
+EPA Air Quality System (AQS) Data Documentation
+Cuyahoga County, Ohio — Annual Monitor Summary, 2024
+Accessed: June 15, 2026
+
+OVERVIEW
+
+This file (cuyahoga_aqs_2024.csv) contains annual air quality summary statistics for
+monitoring stations operating in Cuyahoga County, Ohio during calendar year 2024. Data
+were obtained from the EPA Air Quality System Pre-Generated Data Files, available at
+https://aqs.epa.gov/aqsweb/airdata/download_files.html.
+
+The source file (annual_conc_by_monitor_2024.zip) contains data for all U.S. monitoring
+stations. This subset has been filtered to Cuyahoga County stations measuring PM2.5
+and ozone only.
+
+POLLUTANT AND AVERAGING PERIOD SELECTION
+
+Two pollutants are included:
+
+  PM2.5 (Fine Particulate Matter)
+  Parameter name: PM2.5 - Local Conditions
+  Sample duration: 24-HR BLK AVG (24-hour block average)
+  Regulatory standard applied: PM25 24-hour 2024
+  Units: Micrograms per cubic meter (ug/m3)
+  EPA annual standard: 9 ug/m3 (revised 2024)
+  EPA 24-hour standard: 35 ug/m3
+
+  Ozone
+  Parameter name: Ozone
+  Sample duration: 8-HR RUN AVG BEGIN HOUR (8-hour running average)
+  Regulatory standard applied: Ozone 8-hour 2015
+  Units: Parts per million (ppm)
+  EPA 8-hour standard: 0.070 ppm
+
+Where multiple instruments (POC values) existed at a single site, the primary
+instrument (lowest POC) was retained. Where multiple regulatory standards applied
+to the same readings, the most current standard was retained. This produces one
+row per monitoring station per pollutant.
+
+DATA COVERAGE
+
+Stations with an observation_pct below 75 are considered incomplete by EPA standards.
+Their annual summary statistics may not reliably represent annual conditions and should
+be interpreted with caution.
+
+GEOGRAPHIC COVERAGE AND LIMITATIONS
+
+Monitoring stations are fixed-location instruments. Areas of Cuyahoga County without
+a nearby monitoring station may have substantially different air quality conditions than
+what the monitored locations record. The spatial distribution of monitors is not random:
+station placement reflects regulatory requirements, historical siting decisions, and
+resource availability. Users should not assume that monitored locations are
+representative of the county as a whole.
+
+COLUMN DESCRIPTIONS
+
+site_id ............. EPA monitoring site number (string; treat as identifier, not number)
+local_site_name ..... Name assigned to the site by the operating agency
+address ............. Street address of the monitoring station
+latitude ............ Decimal degrees, WGS84
+longitude ........... Decimal degrees, WGS84
+parameter ........... Pollutant name (PM2.5 - Local Conditions or Ozone)
+year ................ Calendar year (2024)
+units ............... Units of measurement for concentration values
+observation_pct ..... Percent of required monitoring days with valid observations
+mean_value .......... Arithmetic mean of daily concentrations across the year
+max_value ........... Highest single daily concentration recorded
+pct_98th ............ 98th percentile of daily concentrations (used in PM2.5 design value)
+pct_75th ............ 75th percentile of daily concentrations
+pct_50th ............ Median (50th percentile) of daily concentrations
+
+FURTHER READING
+EPA AQS Data: https://www.epa.gov/aqs
+AQS Data Dictionary: https://aqs.epa.gov/aqsweb/documents/AQS_Data_Dictionary.html

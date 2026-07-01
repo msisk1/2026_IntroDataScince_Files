@@ -1,0 +1,77 @@
+NOAA GHCN-D Daily Weather Observations
+Cuyahoga County Area, Ohio | 2020-2024
+Source: NOAA Climate Data Online (https://www.ncei.noaa.gov/cdo-web/)
+Accessed: June 15, 2026
+File: cuyahoga_weather_2020_2024.csv
+
+================================================================
+STATION INVENTORY
+================================================================
+
+  ID              NAME                                    TYPE          LAT      LON
+  USW00014820     Cleveland Hopkins International Airport  NWS Airport   41.411  -81.850
+  USW00004853     Cleveland Burke Lakefront Airport        NWS Airport   41.516  -81.683
+  US1OHCY0024     Parma 1.9 NNW                           CoCoRaHS      41.443  -81.738
+  US1OHCY0048     Highland Hills 0.8 W                    CoCoRaHS      41.443  -81.537
+  US1OHCY0041     Lakewood 1.3 SSW                        CoCoRaHS      41.466  -81.812
+
+NWS Airport stations are operated by the National Weather Service and record
+temperature, precipitation, snowfall, and wind speed. These are professional-grade
+instruments with calibration and maintenance requirements.
+
+CoCoRaHS (Community Collaborative Rain, Hail and Snow Network) stations are operated
+by trained volunteers. They record precipitation and snowfall only. Temperature and
+wind speed are not measured at these stations and will appear as NA in the dataset.
+This is expected, not a data error.
+
+================================================================
+IMPORTANT NOTES ON DATA INTERPRETATION
+================================================================
+
+MISSING VALUES
+  NA in temp_max_f, temp_min_f, wind_speed_mph for CoCoRaHS stations:
+    Expected -- these instruments do not measure temperature or wind.
+
+  NA in precip_in or snowfall_in for any station:
+    Indicates no observation was submitted for that day, either due to
+    equipment issues or (for CoCoRaHS) volunteer observer absence.
+
+  A value of 0 in precip_in or snowfall_in:
+    Indicates a valid observation of no precipitation. This is different
+    from NA.
+
+UNITS
+  Data were downloaded from NOAA Climate Data Online in standard U.S. units:
+    Temperature: degrees Fahrenheit
+    Precipitation: inches
+    Snowfall: inches
+    Wind speed: miles per hour
+
+LAKE EFFECT
+  Burke Lakefront Airport (USW00004853) is located approximately 200 meters
+  from the shore of Lake Erie. Lake Erie moderates temperatures at this location
+  (warmer winters, cooler summers than inland) and produces substantially higher
+  snowfall during lake-effect snow events compared to inland stations. Users
+  comparing the two airport stations should account for this geographic difference.
+
+BURKE LAKEFRONT AIRPORT
+  Cleveland Burke Lakefront Airport closed to commercial air traffic in 2023.
+  The NOAA weather station at this location remains active and continues to
+  report observations.
+
+================================================================
+VARIABLES
+================================================================
+
+station_id ......... NOAA GHCN station identifier (string)
+station_name ....... Official NOAA station name
+station_type ....... Airport (NWS) or Volunteer (CoCoRaHS)
+latitude ........... Decimal degrees, WGS84
+longitude .......... Decimal degrees, WGS84
+date ............... Observation date (YYYY-MM-DD; stored as string -- convert
+                     with pd.to_datetime() for time-based analysis)
+temp_max_f ......... Maximum daily temperature (degrees Fahrenheit; NA for CoCoRaHS)
+temp_min_f ......... Minimum daily temperature (degrees Fahrenheit; NA for CoCoRaHS)
+precip_in .......... Total daily liquid precipitation (inches; 0 = dry day, NA = no obs)
+snowfall_in ........ Total daily snowfall (inches; 0 = no snow, NA = no obs)
+wind_speed_mph ..... Mean daily wind speed (miles per hour; NA for CoCoRaHS)

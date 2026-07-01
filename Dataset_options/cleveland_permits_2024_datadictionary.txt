@@ -1,0 +1,82 @@
+Cleveland Building Permits — 2024
+Frequently Asked Questions and Data Notes
+City of Cleveland, Department of Building and Housing
+Downloaded from: https://data.clevelandohio.gov
+Accessed: June 15, 2026
+File: cleveland_permits_2024.csv
+
+----------------------------------------------------------------
+
+WHAT IS THIS DATASET?
+
+This file contains building permits filed with the City of Cleveland's Department of
+Building and Housing during calendar year 2024. It has been filtered to include only
+"New" category permits (new construction and significant renovations) with a status
+of "Permit Closed," meaning the work was completed and the permit formally closed.
+
+Each row is one permit. There are approximately 4,300 rows.
+
+----------------------------------------------------------------
+
+WHAT DOES EACH ROW REPRESENT?
+
+One completed building permit filed in 2024. The permit covers a specific piece of
+construction or renovation work at a specific address in Cleveland.
+
+----------------------------------------------------------------
+
+WHAT WAS EXCLUDED FROM THE ORIGINAL DATA?
+
+The original dataset on the Cleveland Open Data Portal contains all permit types
+(electrical, plumbing, HVAC, etc.) and all statuses (open, pending, closed). This
+subset keeps only:
+  - Permit type: Building Permit
+  - Category: New (new construction and renovation; excludes electrical, plumbing, HVAC)
+  - Status: Permit Closed (completed permits only)
+
+Contractor names and license numbers were also removed to protect individual privacy.
+
+----------------------------------------------------------------
+
+WHAT SHOULD I WATCH OUT FOR?
+
+Job values are self-reported. The job_value column contains the declared construction
+value submitted by the permit applicant at time of filing. The city does not verify
+these values before issuing the permit. Small jobs are frequently underreported,
+and some applicants enter $0 or $1 as a placeholder. Do not treat this column as
+a precise or verified measure of construction investment.
+
+Issue dates can be in the future. Permits filed in late 2024 may show issue_date
+values in 2025, reflecting normal processing and inspection time. This is not an
+error; it is how the permitting process works.
+
+Some neighborhoods are missing. Four permits have no neighborhood value (NA) due
+to address geocoding failures. These rows are kept in the dataset rather than dropped.
+
+This is city data only. The dataset covers the City of Cleveland municipal boundaries.
+Suburban cities within Cuyahoga County (Parma, Lakewood, Shaker Heights, etc.) have
+separate permit systems and are not included.
+
+----------------------------------------------------------------
+
+COLUMN REFERENCE
+
+permit_id .......... Unique permit identifier assigned by city system (string)
+year ............... Year permit was filed (2024)
+file_date .......... Date permit application was submitted (YYYY-MM-DD)
+issue_date ......... Date permit was issued or closed (YYYY-MM-DD; may be in 2025)
+permit_subtype ..... Residential or Commercial
+job_description .... Type of work as described by applicant (free text; not standardized)
+job_value .......... Declared construction value in U.S. dollars (self-reported; see above)
+total_fees_paid .... Permit fees paid to the city in U.S. dollars
+ward ............... City council ward number (1-17; 1 NA value)
+neighborhood ....... City of Cleveland neighborhood name (35 possible; 4 NA values)
+latitude ........... Decimal degrees, WGS84 (1 NA value)
+longitude .......... Decimal degrees, WGS84 (1 NA value)
+
+----------------------------------------------------------------
+
+WHERE CAN I GET MORE INFORMATION?
+
+Full dataset and documentation: https://data.clevelandohio.gov
+Cleveland Department of Building and Housing: https://www.clevelandohio.gov/building

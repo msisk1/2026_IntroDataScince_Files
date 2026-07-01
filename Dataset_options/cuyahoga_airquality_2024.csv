@@ -1,0 +1,11 @@
+site_id,local_site_name,address,latitude,longitude,parameter,year,units,observation_pct,mean_value,max_value,pct_98th,pct_75th,pct_50th
+0034,District 6,881 E. 152nd ST.,41.55523,-81.575256,Ozone,2024,Parts per million,97,0.045376,0.075,0.069,0.052,0.045
+0034,District 6,881 E. 152nd ST.,41.55523,-81.575256,PM2.5 - Local Conditions,2024,Micrograms/cubic meter (LC),100,6.367486,18.5,16.1,8.3,5.7
+0038,St Theodosius,2547 ST TIKHON,41.477011,-81.682383,PM2.5 - Local Conditions,2024,Micrograms/cubic meter (LC),99,8.97033,22.9,19.5,11.9,8.3
+0045,Cleveland Fire St13,4950 BROADWAY AVE.,41.471782,-81.656792,PM2.5 - Local Conditions,2024,Micrograms/cubic meter (LC),97,8.196629,27.3,18.4,10.1,7.4
+0060,GT Craig NCore PAMS,E. 14TH & ORANGE,41.492117,-81.678449,Ozone,2024,Parts per million,96,0.03674,0.068,0.063,0.045,0.036
+0060,GT Craig NCore PAMS,E. 14TH & ORANGE,41.492117,-81.678449,PM2.5 - Local Conditions,2024,Micrograms/cubic meter (LC),99,9.828571,28.7,22.8,13.1,8.8
+0064,Berea BOE,390 FAIR ST.,41.361835,-81.86457,Ozone,2024,Parts per million,98,0.044583,0.069,0.065,0.052,0.045
+0065,Harvard Yards,4600 HARVARD AVE.,41.446624,-81.662356,PM2.5 - Local Conditions,2024,Micrograms/cubic meter (LC),99,8.92314,28.5,18.2,11.6,8.5
+0073,Cleveland Near Road,25609 EMERY ROAD,41.44013,-81.494833,PM2.5 - Local Conditions,2024,Micrograms/cubic meter (LC),99,6.465385,19,14.7,8,6
+5002,Mayfield,6116 WILSON MILLS,41.536942,-81.458871,Ozone,2024,Parts per million,100,0.045398,0.077,0.069,0.053,0.045
