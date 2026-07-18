@@ -1,0 +1,57 @@
+INSTRUCTOR MANIFEST -- graystone_sensors_raw.csv
+Planted data quality issues (do not distribute to students)
+============================================================
+
+Base data: 12 sensors x 31 days (March 2026) = 372 rows
+Plus 5 exact duplicates and 2 near-duplicates = 379 rows total
+Daily values drawn (seed=42) around each neighborhood's published
+annual mean, so cleaned+aggregated results align with
+graystone_air_quality.csv.
+
+pm25 = -999 sentinels (7)
+  - STN-SW-04 2026-03-06
+  - STN-SW-04 2026-03-07
+  - STN-SW-04 2026-03-08
+  - STN-SW-04 2026-03-09
+  - STN-NW-01 2026-03-18
+  - STN-SE-01 2026-03-04
+  - STN-DT-05 2026-03-23
+
+no2 blank/missing (9)
+  - STN-NW-03 2026-03-03
+  - STN-NW-03 2026-03-04
+  - STN-NE-02 2026-03-12
+  - STN-NE-03 2026-03-20
+  - STN-SW-06 2026-03-25
+  - STN-SE-06 2026-03-10
+  - STN-SE-06 2026-03-11
+  - STN-DT-01 2026-03-28
+  - STN-SW-05 2026-03-15
+
+o3 = "err" strings (5, make column object dtype)
+  - STN-NW-04 2026-03-05
+  - STN-NW-04 2026-03-06
+  - STN-SE-01 2026-03-21
+  - STN-DT-01 2026-03-09
+  - STN-NE-02 2026-03-30
+
+outliers (2)
+  - STN-NW-03 2026-03-13 pm25=487.2 (impossible spike)
+  - STN-SW-06 2026-03-17 no2=-4.1 (negative, physically impossible)
+
+neighborhood string issues (19 rows)
+  - 'Eastgate ' trailing space x8
+  - 'millbrook' lowercase x6
+  - 'Willow Bend' (should be 'Willowbend') x5
+
+exact duplicate rows (5, appended at end of file)
+  - STN-SE-06 2026-03-02
+  - STN-SE-06 2026-03-03
+  - STN-SE-06 2026-03-04
+  - STN-NW-01 2026-03-11
+  - STN-DT-05 2026-03-16
+
+near-duplicate rows (2, same sensor+date, conflicting pm25)
+  - STN-NE-02 2026-03-08
+  - STN-SW-04 2026-03-21
+

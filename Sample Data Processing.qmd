@@ -12,6 +12,9 @@ Q
 library(tidycensus)
 library(tidyverse)
 
+
+file_loc <- "c:/users/msisk1/Documents/RProjs/2025_Misc/"
+
 # Pull ACS 5-year estimates for Cuyahoga County census tracts
 cuyahoga_acs <- get_acs(
   geography = "tract",
@@ -53,17 +56,16 @@ cuyahoga_acs <- get_acs(
   )
 
 # Quick check
-glimpse(cuyahoga_acs)
-summary(cuyahoga_acs)
+# glimpse(cuyahoga_acs)
+# summary(cuyahoga_acs)
 
 # Save to CSV
-write_csv(cuyahoga_acs, "cuyahoga_acs_2024.csv")
+write_csv(cuyahoga_acs, "Dataset_options/cuyahoga_acs_2024.csv")
 ```
 
 ## Air Quality
 
 ```{r}
-library(tidyverse)
 
 # Download EPA AQS annual summary for PM2.5, 2024
 # This is a large national file (~50MB) so may take a moment
@@ -107,7 +109,7 @@ cuyahoga_aqs <- aqs_raw %>%
 cuyahoga_aqs %>% count(parameter)
 glimpse(cuyahoga_aqs)
 # Save
-write_csv(cuyahoga_aqs, "cuyahoga_aqs_2024.csv")
+write_csv(cuyahoga_aqs, "Dataset_options/cuyahoga_airquality_2024.csv")
 ```
 
 ## NOAA
@@ -117,11 +119,9 @@ Downloaded from the standard web tool <https://www.ncei.noaa.gov/cdo-web/>
 ![](images/clipboard-1153502819.png)
 
 ```{r}
-library(rnoaa)
-library(tidyverse)
 
 
-weather_raw <- read_csv("4337957.csv")
+weather_raw <- read_csv(paste0(file_loc,"4337957.csv"))
 
 selected_stations <- c(
   "USW00014820",  # Cleveland Hopkins International Airport (inland/SW, full data)
@@ -139,23 +139,14 @@ cleveland_weather <- weather_raw %>%
     latitude      = LATITUDE,
     longitude     = LONGITUDE,
     date          = DATE,
-    temp_max_c    = TMAX,
-    temp_min_c    = TMIN,
-    precip_mm     = PRCP,
-    snowfall_mm   = SNOW,
-    wind_speed_ms = AWND
+    temp_max_f    = TMAX,
+    temp_min_f    = TMIN,
+    precip_in     = PRCP,
+    snowfall_in   = SNOW,
+    wind_speed_mph = AWND
   ) %>%
   mutate(
-    # NOAA stores temperature in tenths of degrees C
-    temp_max_c    = temp_max_c / 10,
-    temp_min_c    = temp_min_c / 10,
-    # NOAA stores precipitation in tenths of mm
-    precip_mm     = precip_mm  / 10,
-    # NOAA stores wind speed in tenths of meters per second
-    wind_speed_ms = wind_speed_ms / 10,
-    # Snowfall is already in mm
-    # Create a readable station type column
-    station_type  = case_when(
+    station_type = case_when(
       str_starts(station_id, "USW") ~ "Airport (NWS)",
       str_starts(station_id, "US1") ~ "Volunteer (CoCoRaHS)",
       TRUE ~ "Other"
@@ -164,32 +155,32 @@ cleveland_weather <- weather_raw %>%
   select(
     station_id, station_name, station_type,
     latitude, longitude,
-    date, temp_max_c, temp_min_c,
-    precip_mm, snowfall_mm, wind_speed_ms
+    date, temp_max_f, temp_min_f,
+    precip_in, snowfall_in, wind_speed_mph
   ) %>%
   arrange(station_id, date)
 
 # Quick check
-glimpse(cleveland_weather)
+# glimpse(cleveland_weather)
 
 cleveland_weather %>%
   group_by(station_id, station_name, station_type) %>%
   summarise(
     n_days       = n(),
-    pct_tmax     = mean(!is.na(temp_max_c)),
-    pct_prcp     = mean(!is.na(precip_mm)),
+    pct_tmax     = mean(!is.na(temp_max_f)),
+    pct_prcp     = mean(!is.na(precip_in)),
     .groups = "drop"
   ) %>%
   print()
 
-write_csv(cleveland_weather, "cuyahoga_weather_2020_2024.csv")
+write_csv(cleveland_weather, "Dataset_options/cuyahoga_weather_2020_2024.csv")
 ```
 
 ## Building Permits
 
 ```{r}
-building_permits <- read_csv("Building_Permits_-148757603738756233.csv")
-glimpse(building_permits)
+building_permits <- read_csv(paste0(file_loc,"Building_Permits_-148757603738756233.csv"))
+# glimpse(building_permits)
 
 
 # Parse dates and check year distribution
@@ -252,7 +243,7 @@ cleveland_permits_2024 %>% count(permit_subtype, sort = TRUE)
 cleveland_permits_2024 %>% count(neighborhood, sort = TRUE) %>% print(n = Inf)
 cleveland_permits_2024 %>% summary()
 
-write_csv(cleveland_permits_2024, "cleveland_permits_2024.csv")
+write_csv(cleveland_permits_2024, "Dataset_options/cleveland_permits_2024.csv")
 
 ```
 
@@ -261,7 +252,7 @@ write_csv(cleveland_permits_2024, "cleveland_permits_2024.csv")
 ```{r}
 library(tidyverse)
 
-bls_raw <- read_csv("BLS_2010-2026.csv", skip = 8)
+bls_raw <- read_csv(paste0(file_loc,"BLS_2010-2026.csv"), skip = 8)
 
 cuyahoga_unemployment <- bls_raw %>%
   rename(
@@ -311,5 +302,5 @@ cuyahoga_unemployment %>%
   print()
 
 glimpse(cuyahoga_unemployment)
-write_csv(cuyahoga_unemployment, "cuyahoga_unemployment_2010_2024.csv")
+write_csv(cuyahoga_unemployment, "Dataset_options/cuyahoga_unemployment_2010_2024.csv")
 ```
